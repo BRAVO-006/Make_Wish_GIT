@@ -10,19 +10,20 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.20.1",
-    "react-scripts": "5.0.1",
     "tailwindcss": "^3.3.6"
   },
   "devDependencies": {
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.10"
   },
-  "scripts": {
-    "start": "react-scripts start",
-    "dev": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+ "scripts": {
+  "start": "npx react-scripts start",
+  "dev": "npx react-scripts start",
+  "build": "npx react-scripts build",
+  "test": "npx react-scripts test",
+  "eject": "npx react-scripts eject"
+},
   "browserslist": {
     "production": [
       ">0.2%",

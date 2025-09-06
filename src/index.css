@@ -1,11 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-light-surface text-light-on-surface dark:bg-dark-surface dark:text-dark-on-surface transition-colors duration-300;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Default background (light mode) */
+  background-color: #283c86;
+  background-image: linear-gradient(to right top, #283c86, #45a247);
+  
+  font-family: 'Poppins', sans-serif;
+  color: #ffffff;
+  /* Add a smooth transition for the background change */
+  transition: background-image 0.5s ease-in-out;
 }
+
+.dark body {
+  /* New gradient background for dark mode */
+  background-color: #0f0c29;
+  background-image: linear-gradient(to right top, #0f0c29, #302b63, #24243e);
+}
+
