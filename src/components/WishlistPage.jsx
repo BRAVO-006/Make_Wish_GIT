@@ -94,7 +94,7 @@ export function WishlistPage() {
             </div>
             <div className="p-4 flex flex-col flex-grow">
               <h3 className="font-semibold text-lg text-white flex-grow">{item.product_name}</h3>
-              <p className="text-blue-400 font-bold text-xl my-2">{item.price}</p>
+              <p className="text-blue-400 font-bold text-xl my-2">₹{item.price}</p>
               <div className="flex items-center justify-between mt-auto pt-2">
                 <a href={item.product_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-400 hover:underline">
                   <ExternalLink size={16}/> View Product

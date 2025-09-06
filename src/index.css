@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap');
+/* Import the new font families from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Qwigley&family=Raleway:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -9,9 +10,9 @@ body {
   background-color: #283c86;
   background-image: linear-gradient(to right top, #283c86, #45a247);
   
-  font-family: 'Poppins', sans-serif;
+  /* Set the default font to Raleway */
+  font-family: 'Raleway', sans-serif;
   color: #ffffff;
-  /* Add a smooth transition for the background change */
   transition: background-image 0.5s ease-in-out;
 }
 

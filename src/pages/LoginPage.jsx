@@ -4,11 +4,9 @@ import { Link } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import loginImage from './Homepage.jpg'; // Import your local image
 
-// You can replace this with your actual logo
 const Logo = () => (
-  <img src="/logo.png" alt="Logo" className="w-8 h-8" />
+  <img src="/logo.png" alt="Logo" className="w-10 h-10 rounded-full border-2 border-white/50 object-cover" />
 );
-
 
 export function LoginPage() {
   const [loading, setLoading] = useState(false);
@@ -43,25 +41,28 @@ export function LoginPage() {
       style={{ backgroundImage: `url(${loginImage})` }}
     >
       {/* Frosted Glass Container */}
-      <div className="w-full max-w-md p-8 space-y-6 bg-black/20 backdrop-blur-sm rounded-2xl shadow-2xl border border-white/40">
+      <div className="w-full max-w-md p-8 space-y-6 bg-black/40 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20">
         
         {/* Header */}
         <div className="flex flex-col items-center text-center gap-3 mb-8">
-          <Logo />
-          <span className="text-2xl font-bold text-white">MakeWish</span>
-          <h1 className="text-3xl font-medium text-white">
-            Nice to see you again
+            <Link to="/" className="flex items-center gap-3 transition-transform hover:scale-105">
+                <Logo />
+                {/* Apply the Qwigley font and adjust size/styling */}
+                <span className="font-qwigley text-5xl text-white">Make Wish</span>
+            </Link>
+          <h1 className="text-3xl font-md text-white font-sans pt-4">
+            Make your wish come true
           </h1>
         </div>
         
         {/* Form */}
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
-            <label className="text-sm font-medium text-white-200">Login</label>
+            <label className="text-sm font-medium text-gray-200">Login</label>
             <input
               type="email"
               required
-              className="w-full mt-1 px-4 py-3 bg-white/10 text-white border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 placeholder-gray-300"
+              className="w-full mt-1 px-4 py-3 bg-white/10 text-white border border-white/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 placeholder-gray-300"
               placeholder="Email or phone number"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -92,7 +93,9 @@ export function LoginPage() {
               <input type="checkbox" id="remember" className="h-4 w-4 rounded border-gray-500 bg-transparent text-brand-600 focus:ring-brand-500" />
               <label htmlFor="remember" className="ml-2 text-gray-300">Remember me</label>
             </div>
-            <a href="#" className="font-medium text-blue-400 hover:text-blue-300">Forgot password?</a>
+            <Link to="/forgot-password" className="font-medium text-blue-400 hover:text-blue-300">
+              Forgot password?
+            </Link>
           </div>
 
           <div>

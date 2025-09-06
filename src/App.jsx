@@ -3,11 +3,12 @@ import { BrowserRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { supabase } from './lib/supabaseClient';
 import { LoginPage } from './pages/LoginPage';
 import { SignUpPage } from './pages/SignUpPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { UpdatePasswordPage } from './pages/UpdatePasswordPage';
 import { Dashboard } from './components/Dashboard';
 import { WishlistPage } from './components/WishlistPage';
 import { PublicWishlistPage } from './components/PublicWishlistPage';
 import { Sun, Moon, LogOut } from 'lucide-react';
-// The import for AppLogo is no longer needed
 
 // Main layout component that includes the header
 const AppLayout = ({ children, session, theme, toggleTheme }) => {
@@ -16,13 +17,13 @@ const AppLayout = ({ children, session, theme, toggleTheme }) => {
   }
 
   return (
-    <div className="min-h-screen font-sans">
+    <div className="min-h-screen">
       <header className="sticky top-0 z-10 bg-white/10 backdrop-blur-lg border-b border-white/20">
         <nav className="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-3">
-          <Link to="/" className="flex items-center gap-3 text-2xl font-bold text-white transition-transform hover:scale-105">
-            {/* Updated to use logo.png from the public folder */}
+          <Link to="/" className="flex items-center gap-3 transition-transform hover:scale-105">
             <img src="/logo.png" alt="Make Wish Logo" className="h-10 w-10 rounded-full border-2 border-white/50 object-cover" />
-            <span>Make Wish</span>
+            {/* Apply the Qwigley font and adjust size/styling */}
+            <span className="font-qwigley text-5xl text-white">Make Wish</span>
           </Link>
           <div className="flex items-center space-x-2 sm:space-x-4">
             <button onClick={toggleTheme} className="p-2 rounded-full text-white hover:bg-white/20 focus:outline-none">
@@ -50,7 +51,7 @@ const AppLayout = ({ children, session, theme, toggleTheme }) => {
 
 export default function App() {
   const [session, setSession] = useState(null);
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark'); // Default to dark for better contrast
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -69,8 +70,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    // For this design, we can force dark mode or remove the light/dark logic
-    // For now, the toggle remains functional but the base is dark.
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
     } else {
@@ -90,8 +89,14 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public routes */}
         <Route path="/login" element={!session ? <LoginPage /> : <Navigate to="/" />} />
         <Route path="/signup" element={!session ? <SignUpPage /> : <Navigate to="/" />} />
+        <Route path="/forgot-password" element={!session ? <ForgotPasswordPage /> : <Navigate to="/" />} />
+        <Route path="/update-password" element={<UpdatePasswordPage />} />
+        <Route path="/share/:slug" element={<PublicWishlistPage />} />
+
+        {/* Protected routes */}
         <Route path="/*" element={
           !session ? (
             <Navigate to="/login" />
@@ -100,14 +105,10 @@ export default function App() {
               <Routes>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/wishlist/:id" element={<WishlistPage />} />
-                {/* The public page will likely not have the main layout, so it might need its own route structure */}
-                <Route path="/share/:slug" element={<PublicWishlistPage />} />
               </Routes>
             </AppLayout>
           )
         } />
-         {/* A separate route for public page if it should not have the header */}
-         <Route path="/share/:slug" element={<PublicWishlistPage />} />
       </Routes>
     </BrowserRouter>
   );

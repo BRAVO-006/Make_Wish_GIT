@@ -2,39 +2,56 @@ import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabaseClient';
 import { Link } from 'react-router-dom';
 import { Plus, Gift, ArrowRight, PackageOpen } from 'lucide-react';
+import { ErrorPopup } from './ErrorPopup'; // Import the new component
 
 export function Dashboard() {
   const [wishlists, setWishlists] = useState([]);
   const [newWishlistName, setNewWishlistName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null); // State for the error message
 
   useEffect(() => {
-    const fetchWishlists = async () => {
-      setLoading(true);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setLoading(false);
-        return;
-      }
-      const { data, error } = await supabase.from('wishlists').select('*').eq('user_id', user.id);
-      if (error) {
-        console.error('Error fetching wishlists:', error);
-      } else {
-        setWishlists(data);
-      }
-      setLoading(false);
-    };
     fetchWishlists();
   }, []);
+
+  const fetchWishlists = async () => {
+    setLoading(true);
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    const { data, error } = await supabase.from('wishlists').select('*').eq('user_id', user.id);
+    if (error) {
+      console.error('Error fetching wishlists:', error);
+      setError('Could not fetch your wishlists.'); // Set error for the user
+    } else {
+      setWishlists(data);
+    }
+    setLoading(false);
+  };
 
   const createWishlist = async (e) => {
     e.preventDefault();
     if (newWishlistName.trim() === '') return;
+
+    // **THE FIX: Generate a random string for the share_slug**
+    const shareSlug = Math.random().toString(36).substring(2, 12);
+
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
-      const { data, error } = await supabase.from('wishlists').insert({ title: newWishlistName, user_id: user.id }).select();
+      const { data, error } = await supabase
+        .from('wishlists')
+        .insert({ 
+          title: newWishlistName, 
+          user_id: user.id,
+          share_slug: shareSlug // Include the new slug in the insert
+        })
+        .select();
+      
       if (error) {
         console.error('Error creating wishlist:', error);
+        setError('Failed to create the wishlist. Please try again.'); // Set error for the user
       } else if (data) {
         setWishlists([...wishlists, data[0]]);
         setNewWishlistName('');
@@ -44,6 +61,9 @@ export function Dashboard() {
 
   return (
     <div className="max-w-4xl mx-auto">
+      {/* Conditionally render the ErrorPopup */}
+      <ErrorPopup message={error} onClose={() => setError(null)} />
+
       {/* Frosted Container for the whole dashboard */}
       <div className="bg-white/10 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-2xl border border-white/20">
         <div className="mb-8">
@@ -61,7 +81,7 @@ export function Dashboard() {
           />
           <button type="submit" className="flex-shrink-0 px-5 py-3 font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
             <Plus size={20} />
-            <span>Create</span>
+            <span>Create Category</span>
           </button>
         </form>
 
