@@ -129,7 +129,7 @@ export function PublicWishlistPage() {
       {/* Hold Item Modal would go here if combined */}
       
       <a href="/" className="flex items-center justify-center gap-3 text-2xl font-bold text-white transition-transform hover:scale-105 mb-12">
-        <img src={AppLogo} alt="Make Wish Logo" className="h-10 w-10 rounded-full border-2 border-white/50 object-cover" />
+        <img src="/logo.png" alt="Make Wish Logo" className="h-10 w-10 rounded-full border-2 border-white/50 object-cover" />
         <span className="font-qwigley text-5xl">Make Wish</span>
       </a>
 
