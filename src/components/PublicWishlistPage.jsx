@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { ExternalLink, Image as ImageIcon, Gift, Lock, Check, Bell } from 'lucide-react';
-import AppLogo from '../pages/Homepage.jpg';
 import { ErrorPopup } from './ErrorPopup';
 import { SuccessPopup } from './SuccessPopup'; // Import success popup
 
