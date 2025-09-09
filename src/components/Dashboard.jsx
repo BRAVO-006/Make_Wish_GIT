@@ -25,34 +25,24 @@ export function Dashboard() {
 
   const fetchWishlists = async () => {
     setLoading(true);
-    setError(null);
-    console.log('DEBUG: Starting fetchWishlists...');
-
     const { data: userData, error: userError } = await supabase.auth.getUser();
 
     if (userError || !userData?.user) {
-      console.error('DEBUG: Error fetching user or user not found:', userError);
+      console.error('Error fetching user or user not found:', userError);
       setError('Could not verify your session. Please try logging in again.');
       setLoading(false);
       return;
     }
-
-    console.log('DEBUG: User fetched successfully:', userData.user);
 
     const { data, error: wishlistsError } = await supabase
       .from('wishlists')
       .select('*')
       .eq('user_id', userData.user.id);
 
-    console.log('DEBUG: Wishlists data from Supabase:', data);
-    console.log('DEBUG: Wishlists error from Supabase:', wishlistsError);
-
-
     if (wishlistsError) {
       console.error('Error fetching wishlists:', wishlistsError);
       setError('Could not fetch your wishlists.');
     } else {
-      console.log('DEBUG: Setting wishlists state with:', data || []);
       setWishlists(data || []);
     }
     setLoading(false);
@@ -97,8 +87,6 @@ export function Dashboard() {
     }
   };
 
-  console.log('DEBUG: Rendering Dashboard component. State:', { loading, error, wishlists });
-
   return (
     <div className="max-w-4xl mx-auto">
       <ErrorPopup message={error} onClose={() => setError(null)} />
@@ -120,7 +108,8 @@ export function Dashboard() {
                 />
                 <button type="submit" className="flex-shrink-0 px-5 py-3 font-semibold text-white bg-brand-600 hover:bg-brand-700 rounded-lg transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-500">
                     <Plus size={20} />
-                    <span>Create</span>
+                    {/* **THE FIX**: Changed button label */}
+                    <span>Create Category</span>
                 </button>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-4">
@@ -173,4 +162,3 @@ export function Dashboard() {
     </div>
   );
 }
-

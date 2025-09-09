@@ -62,7 +62,6 @@ export function PublicWishlistPage() {
   const [holderEmail, setHolderEmail] = useState(''); 
   const [subscriberEmail, setSubscriberEmail] = useState('');
 
-  // The 'console.log' statements have been removed for cleaner code.
   useEffect(() => {
     const fetchWishlistAndItems = async () => {
         setLoading(true);
@@ -172,18 +171,29 @@ export function PublicWishlistPage() {
           const isHeld = isHoldActive(item.held_until);
           const isFulfilled = item.is_fulfilled;
           return (
-            <div key={item.id} className={`bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg flex flex-col border border-white/20 transition-all ${isHeld || isFulfilled ? 'opacity-60' : ''}`}>
-              <div className="w-full h-48 bg-black/20 flex items-center justify-center">
+            <div key={item.id} className={`bg-white/10 backdrop-blur-md rounded-2xl overflow-hidden shadow-lg flex flex-col border border-white/20 transition-all ${isHeld || isFulfilled ? 'opacity-70' : ''}`}>
+              <div className="w-full h-48 bg-black/20 flex items-center justify-center relative">
                 {item.image_url ? <img src={item.image_url} alt={item.product_name} className="w-full h-full object-cover"/> : <ImageIcon className="text-gray-400" size={48} />}
+                {isFulfilled && (
+                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+                    <div className="text-center text-white animate-fade-in-up">
+                      <PartyPopper size={48} className="text-green-400 mx-auto" />
+                      <p className="font-bold mt-2">Fulfilled!</p>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="font-semibold text-lg text-white flex-grow">{item.product_name}</h3>
                 <p className="text-blue-400 font-bold text-xl my-2">{item.price}</p>
                 <div className="mt-4 pt-4 border-t border-white/10">
                   {isFulfilled ? (
-                    <div className="flex items-center justify-center gap-2 text-green-300 p-2 bg-green-500/10 rounded-lg">
-                      <PartyPopper size={16} />
-                      <span className="text-sm font-semibold">Wish Fulfilled!</span>
+                    <div className="flex flex-col items-center justify-center text-center gap-1 text-green-400 p-2 bg-green-500/10 rounded-lg">
+                      <div className="flex items-center gap-2">
+                        <PartyPopper size={16} />
+                        <span className="text-sm font-semibold">Wish Fulfilled!</span>
+                      </div>
+                      <span className="text-xs opacity-80">by {item.held_by}</span>
                     </div>
                   ) : isHeld ? (
                     <div className="flex flex-col items-center justify-center text-center gap-1 text-yellow-400 p-2 bg-yellow-500/10 rounded-lg">
